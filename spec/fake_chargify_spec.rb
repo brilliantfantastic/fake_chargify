@@ -15,4 +15,13 @@ describe FakeChargify do
       lambda { Net::HTTP.get('example.com', '/index.html') }.should_not raise_error FakeWeb::NetConnectNotAllowedError
     end
   end
+  
+  describe ".clear!" do
+    it "clears the customers" do
+      FakeChargify.customers << FakeChargify::Customer.new
+      FakeChargify.customers.count.should == 1
+      FakeChargify.clear!
+      FakeChargify.customers.count.should == 0
+    end
+  end
 end
