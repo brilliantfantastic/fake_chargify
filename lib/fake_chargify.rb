@@ -1,5 +1,5 @@
 require 'webmock'
-require 'fake_chargify/customer'
+require 'fake_chargify/customer_registry'
 require 'fake_chargify/configuration'
 
 module FakeChargify
@@ -8,7 +8,7 @@ module FakeChargify
   end
   
   def self.clear!
-    self.customers = []
+    self.customers = CustomerRegistry.new
   end
   
   def self.activate!
@@ -20,7 +20,7 @@ module FakeChargify
       WebMock.disable_net_connect!(:allow_localhost => true)
       self.clear!
       
-      FakeChargify::Customer.stub_requests!
+      self.customers.stub_requests!
     else
       WebMock.allow_net_connect!
     end

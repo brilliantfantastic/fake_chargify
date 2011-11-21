@@ -18,10 +18,10 @@ describe FakeChargify do
   
   describe ".clear!" do
     it "clears the customers" do
-      FakeChargify.customers << FakeChargify::Customer.new
-      FakeChargify.customers.count.should == 1
+      FakeChargify.customers.repository << FakeChargify::Customer.new
+      FakeChargify.customers.repository.count.should == 1
       FakeChargify.clear!
-      FakeChargify.customers.count.should == 0
+      FakeChargify.customers.repository.count.should == 0
     end
   end
 end

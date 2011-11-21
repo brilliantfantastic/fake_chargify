@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'webmock'
+gem 'nokogiri'
 
 group :test, :development do
 	gem 'rspec'
