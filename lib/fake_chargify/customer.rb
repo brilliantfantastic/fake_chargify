@@ -1,10 +1,6 @@
 require 'nokogiri'
 
 module FakeChargify
-  
-  #customers class -> stubs out request, handles callbacks, has collection of customer objects (clear, etc)
-  #customer class -> has properties from request
-  
   class Customer
     attr_accessor :id, :first_name, :last_name, :email, :organization, :reference, :created_at, :updated_at
     
