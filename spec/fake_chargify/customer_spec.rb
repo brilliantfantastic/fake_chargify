@@ -1,43 +1,46 @@
 require 'spec_helper'
 
-describe "Chargify::Customer.create" do
+describe "chargify_api_ares gem" do
   before(:each) do
     FakeChargify.activate!
   end
-      
-  it "returns the correct values" do
-    customer = Chargify::Customer.create(:id => 5, :reference => 'dogs')
-    customer.id.should == '5'
-    customer.reference.should == 'dogs'
+  
+  describe "Chargify::Customer.create" do
+    it "returns the correct values" do
+      customer = Chargify::Customer.create(:id => 5, :reference => 'dogs')
+      customer.id.should == '5'
+      customer.reference.should == 'dogs'
+    end
   end
-end
 
-describe "Chargify::Customer.find" do
-  before(:each) do
-    FakeChargify.activate!
+  describe "Chargify::Customer.update" do
+    it "returns the correct values" do
+      customer = Chargify::Customer.create(:id => 5, :reference => 'dogs')
+      customer.reference = 'cats'
+      customer.save
+      Chargify::Customer.find_by_reference('cats').should_not be_nil
+    end
   end
-      
-  it "returns the correct customer by id" do
-    Chargify::Customer.create(:id => 5, :reference => 'dogs')
-    customer = Chargify::Customer.find 5
-    customer.id.should == '5'
-    customer.reference.should == 'dogs'
-  end
-end
 
-describe "Chargify::Customer.find_by_reference" do
-  before(:each) do
-    FakeChargify.activate!
+  describe "Chargify::Customer.find" do
+    it "returns the correct customer by id" do
+      Chargify::Customer.create(:id => 5, :reference => 'dogs')
+      customer = Chargify::Customer.find 5
+      customer.id.should == '5'
+      customer.reference.should == 'dogs'
+    end
   end
-      
-  it "returns the correct customer by reference" do
-    Chargify::Customer.create(:id => 5, :reference => 'dogs', :first_name => 'Joe', :last_name => 'Blow', :email => 'joe@example.com')
-    customer = Chargify::Customer.find_by_reference 'dogs'
-    customer.id.should == '5'
-    customer.reference.should == 'dogs'
-    customer.first_name == 'Joe'
-    customer.last_name == 'Blow'
-    customer.email == 'joe@example.com'
+
+  describe "Chargify::Customer.find_by_reference" do
+    it "returns the correct customer by reference" do
+      Chargify::Customer.create(:id => 5, :reference => 'dogs', :first_name => 'Joe', :last_name => 'Blow', :email => 'joe@example.com')
+      customer = Chargify::Customer.find_by_reference 'dogs'
+      customer.id.should == '5'
+      customer.reference.should == 'dogs'
+      customer.first_name == 'Joe'
+      customer.last_name == 'Blow'
+      customer.email == 'joe@example.com'
+    end
   end
 end
 
