@@ -36,6 +36,16 @@ describe "FakeChargify::Subscription" do
       subscription.customer.first_name = 'Joe'
       subscription.customer.last_name = 'Blow'
       subscription.customer.email = 'joe@example.com'
+      subscription.product = FakeChargify::Product.new
+      subscription.product.accounting_code = '1234'
+      subscription.product.handle = 'Starter'
+      subscription.product.interval = 4
+      subscription.product.name = 'Subscription'
+      subscription.product.price_in_cents = 897
+      subscription.product.family = FakeChargify::ProductFamily.new
+      subscription.product.family.accounting_code = '1234'
+      subscription.product.family.handle = 'Starter'
+      subscription.product.family.name = 'Subscription'
       subscription.to_xml.gsub(/\s/,'').should == 
       """
       <?xml version=\"1.0\"?>
@@ -61,6 +71,18 @@ describe "FakeChargify::Subscription" do
           <created_at />
           <updated_at />
         </customer>
+        <product>
+          <accounting_code>1234</accounting_code>
+          <handle>Starter</handle>
+          <interval>4</interval>
+          <name>Subscription</name>
+          <price_in_cents>897</price_in_cents>
+          <product_family>
+            <accounting_code>1234</accounting_code>
+            <handle>Starter</handle>
+            <name>Subscription</name>
+          </product_family>
+        </product>
       </subscription>
       """.gsub(/\s/,'')
     end

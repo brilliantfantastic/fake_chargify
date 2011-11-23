@@ -22,11 +22,8 @@ module FakeChargify
           xml.expires_at expires_at
           xml.created_at created_at
           xml.updated_at updated_at
-          unless customer.nil?
-            xml << Nokogiri.XML(customer.to_xml).root.to_xml
-          end
-          unless product.nil?
-          end
+          xml << Nokogiri.XML(customer.to_xml).root.to_xml unless customer.nil?
+          xml << Nokogiri.XML(product.to_xml).root.to_xml unless product.nil?
         }
       end
       builder.to_xml
