@@ -24,6 +24,7 @@ module FakeChargify
           xml.updated_at updated_at
           xml << Nokogiri.XML(customer.to_xml).root.to_xml unless customer.nil?
           xml << Nokogiri.XML(product.to_xml).root.to_xml unless product.nil?
+          xml << Nokogiri.XML(credit_card.to_xml).root.to_xml unless credit_card.nil?
         }
       end
       builder.to_xml

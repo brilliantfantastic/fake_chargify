@@ -22,6 +22,24 @@ describe "chargify_api_ares gem" do
       subscription.product_handle.should == 'Starter'
     end
   end
+  
+  describe "Chargify::Subscription.find" do
+    it "returns the correct values" do
+      subscription = Chargify::Subscription.create(
+        :customer_reference => 'jblow',
+        :product_handle => 'Starter',
+        :credit_card_attributes => {
+          :first_name => "Lester",
+          :last_name => "Tester",
+          :expiration_month => 1,
+          :expiration_year => 2020,
+          :full_number => "1"
+        }
+      )
+      subscriptions = Chargify::Subscription.find(:all)
+      subscriptions.count.should == 1
+    end
+  end
 end
 
 describe "FakeChargify::Subscription" do
