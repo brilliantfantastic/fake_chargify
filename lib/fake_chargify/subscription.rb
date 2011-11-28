@@ -34,15 +34,22 @@ module FakeChargify
       subscription = Subscription.new
       doc = Nokogiri::XML.parse(xml)
       doc.xpath('//subscription').map do |e|
-        unless e.xpath('product_handle').nil?
+        subscription.id = e.xpath('id').text.to_i
+        subscription.balance_in_cents = e.xpath('balance_in_cents').text.to_i
+        unless e.xpath('product_handle').empty?
           subscription.product = Product.new
           subscription.product.handle = e.xpath('product_handle').text
         end
-        e.xpath('customer_attributes').map do |c|
-          subscription.customer = Customer.new
-          subscription.customer.first_name = c.xpath('first_name').text
-          subscription.customer.last_name = c.xpath('last_name').text
-          subscription.customer.email = c.xpath('email').text
+        if e.xpath('customer_reference').empty?
+          e.xpath('customer_attributes').map do |c|
+            subscription.customer = Customer.new
+            subscription.customer.first_name = c.xpath('first_name').text
+            subscription.customer.last_name = c.xpath('last_name').text
+            subscription.customer.email = c.xpath('email').text
+          end
+        else
+          customers = FakeChargify.customers.repository.select { |c| c.reference == e.xpath('customer_reference').text }
+          subscription.customer = customers.first
         end
         e.xpath('credit_card_attributes').map do |cc|
           subscription.credit_card = CreditCard.new

@@ -1,7 +1,9 @@
 require 'fake_chargify/customer'
+require 'fake_chargify/url_parser'
 
 module FakeChargify
   class CustomerRegistry
+    include UrlParser
     
     def repository
       @customers ||= []
@@ -57,14 +59,6 @@ module FakeChargify
           customers = repository.select { |customer| customer.reference == reference }
           customers.first.to_xml
         })
-    end
-    
-    def get_id_from_uri(uri)
-      match = uri.path.match(/(\/\d.(xml|json)\z)/)
-      if !match.nil? && match.size > 0
-        match = match[0].match(/\d/)
-        return id = match[0].to_i if !match.nil? && match.size > 0
-      end
     end
     
   end

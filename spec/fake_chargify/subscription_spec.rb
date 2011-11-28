@@ -40,6 +40,65 @@ describe "chargify_api_ares gem" do
       subscriptions.count.should == 1
     end
   end
+  
+  describe "Chargify::Subscription.show" do
+    it "returns the correct values" do
+      Chargify::Subscription.create(
+        :id => 1,
+        :customer_reference => 'jblow',
+        :product_handle => 'Starter',
+        :credit_card_attributes => {
+          :first_name => "Lester",
+          :last_name => "Tester",
+          :expiration_month => 1,
+          :expiration_year => 2020,
+          :full_number => "1"
+        }
+      )
+      subscription = Chargify::Subscription.find 1
+      subscription.credit_card.expiration_month.should == '1'
+      subscription.credit_card.expiration_year.should == '2020'
+      subscription.credit_card.masked_card_number.should == 'XXXX-XXXX-XXXX-1'
+    end
+  end
+  
+  describe "Chargify::Subscription.update" do
+    it "returns the correct values" do
+      subscription = Chargify::Subscription.create(
+        :id => 2,
+        :product_handle => 'Starter',
+        :credit_card_attributes => {
+          :first_name => "Lester",
+          :last_name => "Tester",
+          :expiration_month => 1,
+          :expiration_year => 2020,
+          :full_number => "1"
+        }
+      )
+      subscription.balance_in_cents = 1000
+      subscription.save
+      subscription = Chargify::Subscription.find 2
+      subscription.balance_in_cents.should == '1000'
+    end
+  end
+  
+  describe "Chargify::Subscription.cancel" do
+    it "returns the correct values" do
+      subscription = Chargify::Subscription.create(
+        :id => 3,
+        :product_handle => 'Starter',
+        :credit_card_attributes => {
+          :first_name => "Lester",
+          :last_name => "Tester",
+          :expiration_month => 1,
+          :expiration_year => 2020,
+          :full_number => "1"
+        }
+      )
+      subscription.cancel
+      lambda { Chargify::Subscription.find(3) }.should raise_error
+    end
+  end
 end
 
 describe "FakeChargify::Subscription" do
