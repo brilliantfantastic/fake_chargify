@@ -2,16 +2,18 @@ require 'webmock'
 require 'string_patches'
 require 'fake_chargify/customer_registry'
 require 'fake_chargify/subscription_registry'
+require 'fake_chargify/statement_registry'
 require 'fake_chargify/configuration'
 
 module FakeChargify
   class << self
-    attr_accessor :customers, :subscriptions
+    attr_accessor :customers, :subscriptions, :statements
   end
   
   def self.clear!
     self.customers = CustomerRegistry.new
     self.subscriptions = SubscriptionRegistry.new
+    self.statements = StatementRegistry.new
   end
   
   def self.activate!
@@ -25,6 +27,7 @@ module FakeChargify
       
       self.customers.stub_requests!
       self.subscriptions.stub_requests!
+      self.statements.stub_requests!
     else
       WebMock.allow_net_connect!
     end
