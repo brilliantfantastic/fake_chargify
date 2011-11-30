@@ -1,11 +1,13 @@
 require 'webmock'
-require 'string_patches'
+require 'fake_chargify/string_patches'
 require 'fake_chargify/customer_registry'
 require 'fake_chargify/subscription_registry'
 require 'fake_chargify/statement_registry'
 require 'fake_chargify/configuration'
 
 module FakeChargify
+  VERSION = '0.1.0'
+  
   class << self
     attr_accessor :customers, :subscriptions, :statements
   end
