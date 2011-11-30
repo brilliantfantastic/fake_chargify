@@ -37,6 +37,8 @@ Gem::Specification.new do |s|
   # = MANIFEST =
   s.files = %w[
     Gemfile
+    Rakefile
+    fake_chargify.gemspec
     lib/fake_chargify.rb
     lib/fake_chargify/configuration.rb
     lib/fake_chargify/credit_card.rb
@@ -46,10 +48,10 @@ Gem::Specification.new do |s|
     lib/fake_chargify/product_family.rb
     lib/fake_chargify/statement.rb
     lib/fake_chargify/statement_registry.rb
+    lib/fake_chargify/string_patches.rb
     lib/fake_chargify/subscription.rb
     lib/fake_chargify/subscription_registry.rb
     lib/fake_chargify/url_parser.rb
-    lib/string_patches.rb
     readme.md
     spec/fake_chargify/configuration_spec.rb
     spec/fake_chargify/credit_card_spec.rb
